@@ -25,7 +25,6 @@ class BaseTestCase(TestCase):
     def tearDown(self) -> None:
         app.dependency_overrides.clear()
 
-
     def create_library(self, **kwargs):
         if "name" not in kwargs:
             kwargs["name"] = self.faker.name()
@@ -33,8 +32,7 @@ class BaseTestCase(TestCase):
         if "description" not in kwargs:
             kwargs["description"] = self.faker.sentence()
 
-        library = LibraryModel(**kwargs)
-        return self.store.libraries.add(library.id, library)
+        return self.store.libraries.upsert(LibraryModel(**kwargs))
 
     def create_document(self, **kwargs):
         if "name" not in kwargs:
@@ -47,8 +45,13 @@ class BaseTestCase(TestCase):
             library = self.create_library()
             kwargs["library_id"] = library.id
 
-        document = DocumentModel(**kwargs)
-        return self.store.documents.add(document.id, document)
+        document = self.store.documents.upsert(DocumentModel(**kwargs))
+
+        libary = self.store.libraries.get(document.library_id)
+        libary.documents.add(document.id)
+        self.store.libraries.upsert(libary)
+
+        return document
 
     def create_chunk(self, **kwargs):
         if "text" not in kwargs:
@@ -60,7 +63,11 @@ class BaseTestCase(TestCase):
         if "document_id" not in kwargs:
             document = self.create_document()
             kwargs["document_id"] = document.id
-            kwargs["library_id"] = document.library_id
 
-        chunk = ChunkModel(**kwargs)
-        return self.store.chunks.add(chunk.id, chunk)
+        chunk = self.store.chunks.upsert(ChunkModel(**kwargs))
+        
+        document = self.store.documents.get(chunk.document_id)
+        document.chunks.add(chunk.id)
+        self.store.documents.upsert(document)
+
+        return chunk

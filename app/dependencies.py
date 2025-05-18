@@ -15,12 +15,12 @@ def get_vectorizer():
 def get_chunk_service(
     store=Depends(get_data_store), vectorizer=Depends(get_vectorizer)
 ):
-    return ChunkService(db=store, create_vector=vectorizer)
+    return ChunkService(store=store, create_vector=vectorizer)
 
 
 def get_document_service(store=Depends(get_data_store)):
-    return DocumentService(db=store)
+    return DocumentService(store=store)
 
 
 def get_library_service(store=Depends(get_data_store)):
-    return LibraryService(db=store)
+    return LibraryService(store=store)

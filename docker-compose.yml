@@ -6,4 +6,4 @@ services:
     ports:
       - "8000:8000"
     command: fastapi dev app/main.py --host 0.0.0.0 --port 8000
-    container_name: assistant-api
+    container_name: vector-db-api

@@ -1,6 +1,5 @@
 from typing import List
 from fastapi import APIRouter, Depends, status
-from app.schemas.chunk import ChunkOutput
 from app.schemas.document import DocumentOutput
 from app.services import LibraryService
 from app.dependencies import get_library_service
