@@ -29,8 +29,8 @@ class SearchTestCase(BaseTestCase):
         # Make assertions
         self.assertTrue(self.indices.exists(libraries[0].id))
 
-        actual = [item.id for item in self.indices.get(libraries[0].id).get_all()]
-        expected = [chunks[0].id, chunks[1].id]
+        actual = sorted([item.id for item in self.indices.get(libraries[0].id).get_all()])
+        expected = sorted([chunks[0].id, chunks[1].id])
         self.assertListEqual(actual, expected)
 
     def test_search_library(self):

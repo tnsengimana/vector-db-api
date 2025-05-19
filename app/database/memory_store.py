@@ -11,9 +11,15 @@ T = TypeVar("T", bound=_BaseModel)
 
 
 class MemoryStore(Generic[T]):
+    """
+    Memory store. Uses copy-on-read to avoid accessors from unintentionally modifying stored copies.
+    """
+
     def __init__(self):
         self._data: Dict[str, T] = {}
-        self._lock = threading.RLock()  # Using RLock to allow nested acquires
+        # A lock to ensure that only one thread can read and write from this store at a time. 
+        # Also, using RLock to allow nested acquires
+        self._lock = threading.RLock()  
 
     def get(self, item_id: str):
         with self._lock:
@@ -25,10 +31,9 @@ class MemoryStore(Generic[T]):
         with self._lock:
             return [item.model_copy(deep=True) for item in self._data.values()]
 
-
     def upsert(self, item: T):
         with self._lock:
-            self._data[item.id] = item
+            self._data[item.id] = item.model_copy(deep=True)
             return item
 
     def delete(self, item_id: str):

@@ -1,6 +1,6 @@
 from typing import Dict, Generic, TypeVar
-from ._base import VectorIndex
-from .bruter_force import BruteForceIndex
+from .simple_index import SimpleVectorIndex
+from .base import VectorIndex
 
 
 T = TypeVar("T", bound=VectorIndex)
@@ -14,7 +14,7 @@ class IndexCollection(Generic[T]):
         if library_id in self._collection:
             raise KeyError(f"Library with ID {library_id} is already indexed")
         
-        self._collection[library_id] = BruteForceIndex()
+        self._collection[library_id] = SimpleVectorIndex()
 
     def get(self, library_id: str):
         if library_id not in self._collection:

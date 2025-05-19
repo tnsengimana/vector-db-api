@@ -37,5 +37,5 @@ class SearchService:
                 detail="Library has not been indexed yet",
             )
         
-        vector = create_embedding_vector(payload.query)
-        return self.indices.get(library_id).search(vector, payload.top_k)
+        query_vector = create_embedding_vector(payload.query)
+        return self.indices.get(library_id).search(query_vector, payload.top_k)

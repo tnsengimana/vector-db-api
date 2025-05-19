@@ -1,6 +1,7 @@
 import uuid
+import numpy as np
 from typing import List, Set
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field, field_serializer
 from app.common.misc import get_timestamp
 
 
@@ -36,6 +37,12 @@ class ChunkModel(BaseModel):
     id: str = Field(default_factory=_get_uuid)
     text: str
     document_id: str
-    vector: List[float]
+    vector: np.ndarray
     created_at: str = Field(default_factory=get_timestamp)
     updated_at: str = Field(default_factory=get_timestamp)
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    @field_serializer('vector')
+    def serialize_array(self, array: np.ndarray) -> List[float]:
+        return array.tolist()

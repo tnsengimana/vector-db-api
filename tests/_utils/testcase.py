@@ -9,10 +9,6 @@ from app.dependencies import get_data_store, get_search_indices
 from app.main import app
 
 
-def create_embedding_vector(text: str):
-    return np.random.rand(5).tolist()
-
-
 class BaseTestCase(TestCase):
     faker = Faker()
 
@@ -60,7 +56,7 @@ class BaseTestCase(TestCase):
             kwargs["text"] = self.faker.name()
 
         if "vector" not in kwargs:
-            kwargs["vector"] = create_embedding_vector(kwargs["text"])
+            kwargs["vector"] = np.random.randn(5)
 
         if "document_id" not in kwargs:
             document = self.create_document()

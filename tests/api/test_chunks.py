@@ -65,7 +65,7 @@ class ChunksTestCase(BaseTestCase):
 
         updated = self.store.chunks.get(chunk.id)
         self.assertEqual(updated.text, payload["text"])
-        self.assertNotEqual(updated.vector, chunk.vector)
+        self.assertNotEqual(updated.vector.tolist(), chunk.vector.tolist())
 
     def test_update_chunk__updates_library_index(self):
         # Prep data
@@ -85,7 +85,7 @@ class ChunksTestCase(BaseTestCase):
         # Make assertitions
         updated = self.store.chunks.get(chunk.id)
         self.assertEqual(updated.text, payload["text"])
-        self.assertNotEqual(updated.vector, chunk.vector)
+        self.assertNotEqual(updated.vector.tolist(), chunk.vector.tolist())
         
         indexed_chunk = self.indices.get(library.id).get_all()[0]
         self.assertEqual(indexed_chunk.text, payload["text"])
