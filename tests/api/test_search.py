@@ -28,13 +28,13 @@ class SearchTestCase(BaseTestCase):
 
         # Make assertions
         self.assertTrue(self.indices.exists(libraries[0].id))
-        self.assertListEqual(
-            [
-                item.model_dump(mode="json")
-                for item in self.indices.get(libraries[0].id).get_all()
-            ],
-            [item.model_dump(mode="json") for item in chunks[:2]],
-        )
+
+        actual = [
+            item.model_dump(mode="json")
+            for item in self.indices.get(libraries[0].id).get_all()
+        ]
+        expected = [item.model_dump(mode="json") for item in chunks[:2]]
+        self.assertListEqual(actual, expected)
 
     def test_search_library(self):
         # Prep data
@@ -56,9 +56,11 @@ class SearchTestCase(BaseTestCase):
             )
             for key, value in enumerate(sentences)
         ]
+        payload = {"query": "He completed the project before the deadline.", "top_k": 2}
+
+        # Set up index
         self.indices.add(library.id)
         self.indices.get(library.id).build(chunks)
-        payload = {"query": "He completed the project before the deadline.", "top_k": 2}
 
         # Send request
         response = self.client.post(f"/libraries/{library.id}/search", json=payload)

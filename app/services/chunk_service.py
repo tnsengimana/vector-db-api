@@ -81,6 +81,6 @@ class ChunkService:
         # Delete the chunk from our index
         document = self.store.documents.get(deleted.document_id)
         if self.indices.exists(document.library_id):
-            self.indices.get(document.library_id).remove(deleted)
+            self.indices.get(document.library_id).remove(deleted.id)
 
         return deleted

@@ -2,6 +2,7 @@ import numpy as np
 from abc import ABC, abstractmethod
 from typing import List, Tuple
 from app.database.models import ChunkModel
+from app.schemas.search import SearchOutput
 
 
 class VectorIndex(ABC):
@@ -10,7 +11,7 @@ class VectorIndex(ABC):
         pass
 
     @abstractmethod
-    def search(self, query_vector: List[float], k: int = 10) -> List[Tuple[str, float]]:
+    def search(self, query_vector: List[float], k: int = 10) -> List[SearchOutput]:
         pass
 
     @abstractmethod

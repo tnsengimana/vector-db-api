@@ -1,5 +1,5 @@
 import numpy as np
-from typing import Dict, List, Tuple
+from typing import Dict, List
 from app.database.models import ChunkModel
 from app.schemas.search import SearchOutput
 from ._base import VectorIndex
