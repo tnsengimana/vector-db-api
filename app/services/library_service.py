@@ -1,12 +1,12 @@
 from app.common.misc import model_dump_without_none_values
-from app.database import DataStore
+from app.database import MemoryDatabase
 from app.database.models import LibraryModel
 from app.common.exceptions import raise_library_not_found
 from app.schemas.library import CreateLibraryInput, UpdateLibraryInput
 
 
 class LibraryService:
-    def __init__(self, store: DataStore):
+    def __init__(self, store: MemoryDatabase):
         self.store = store
 
     def get_library(self, library_id: str):

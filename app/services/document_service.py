@@ -1,12 +1,12 @@
 from app.common.misc import model_dump_without_none_values
-from app.database import DataStore
+from app.database import MemoryDatabase
 from app.database.models import DocumentModel
 from app.schemas.document import CreateDocumentInput, UpdateDocumentInput
 from app.common.exceptions import raise_document_not_found, raise_library_not_found
 
 
 class DocumentService:
-    def __init__(self, store: DataStore):
+    def __init__(self, store: MemoryDatabase):
         self.store = store
 
     def get_document(self, document_id: str):

@@ -2,9 +2,10 @@ import numpy as np
 from faker import Faker
 from unittest import TestCase
 from fastapi.testclient import TestClient
-from app.database import create_data_store
+from app.database import MemoryDatabase
+from app.indexing import IndexCollection
 from app.database.models import ChunkModel, DocumentModel, LibraryModel
-from app.dependencies import get_data_store, get_vectorizer
+from app.dependencies import get_data_store, get_search_indices
 from app.main import app
 
 
@@ -17,10 +18,11 @@ class BaseTestCase(TestCase):
 
     def setUp(self) -> None:
         self.client = TestClient(app)
-        self.store = create_data_store()
+        self.store = MemoryDatabase()
+        self.indices = IndexCollection()
 
         app.dependency_overrides[get_data_store] = lambda: self.store
-        app.dependency_overrides[get_vectorizer] = lambda: create_embedding_vector
+        app.dependency_overrides[get_search_indices] = lambda: self.indices
 
     def tearDown(self) -> None:
         app.dependency_overrides.clear()

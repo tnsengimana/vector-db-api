@@ -1,21 +1,19 @@
 from fastapi import Depends
-from app.services import ChunkService, DocumentService, LibraryService
-from app.database import create_data_store
-from app.common.embeddings import create_embedding_vector
+from app.database import MemoryDatabase
+from app.indexing import IndexCollection
+from app.services import ChunkService, DocumentService, LibraryService, SearchService
 
 
 def get_data_store():
-    return create_data_store()
+    return MemoryDatabase()
 
 
-def get_vectorizer():
-    return create_embedding_vector
+def get_search_indices():
+    return IndexCollection()
 
 
-def get_chunk_service(
-    store=Depends(get_data_store), vectorizer=Depends(get_vectorizer)
-):
-    return ChunkService(store=store, create_vector=vectorizer)
+def get_chunk_service(store=Depends(get_data_store), indices=Depends(get_search_indices)):
+    return ChunkService(store=store, indices=indices)
 
 
 def get_document_service(store=Depends(get_data_store)):
@@ -24,3 +22,7 @@ def get_document_service(store=Depends(get_data_store)):
 
 def get_library_service(store=Depends(get_data_store)):
     return LibraryService(store=store)
+
+
+def get_search_service(store=Depends(get_data_store), indices=Depends(get_search_indices)):
+    return SearchService(store=store, indices=indices)

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import chunks, documents, libraries
+from app.routers import chunks, documents, libraries, search
 
 
 app = FastAPI(
@@ -22,6 +22,7 @@ app.add_middleware(
 app.include_router(chunks.router)
 app.include_router(documents.router)
 app.include_router(libraries.router)
+app.include_router(search.router)
 
 
 @app.get("/")
