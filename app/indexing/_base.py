@@ -1,3 +1,4 @@
+import threading
 import numpy as np
 from abc import ABC, abstractmethod
 from typing import List, Tuple
@@ -6,6 +7,8 @@ from app.schemas.search import SearchOutput
 
 
 class VectorIndex(ABC):
+    _lock = threading.RLock()  # Using RLock to allow nested acquires
+
     @abstractmethod
     def build(self, chunks: List[ChunkModel]) -> None:
         pass
