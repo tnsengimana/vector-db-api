@@ -4,7 +4,7 @@ from app.database.models import LibraryModel
 
 
 """
-Contains pydantic models for chunk's request and response payloads.
+Contains pydantic models for library's request and response payloads.
 """
 
 

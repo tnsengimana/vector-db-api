@@ -4,7 +4,7 @@ from app.database.models import DocumentModel
 
 
 """
-Contains pydantic models for chunk's request and response payloads.
+Contains pydantic models for document's request and response payloads.
 """
 
 

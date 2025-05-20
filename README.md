@@ -15,38 +15,47 @@ A REST API for indexing and querying documents in a Vector Database. This projec
   - Read-write locks for individual operations
   - Copy-on-read/write to prevent shared state issues
 
-## Installation
+## Running locally
 
-### Using Docker
+### Installation
 
 1. Clone the repository:
    ```
    git clone https://github.com/yourusername/vector-db-api.git
    cd vector-db-api
    ```
+
+### Using Docker
 
 2. Run the container:
    ```
    docker compose up --build
    ```
 
-### Manual Installation
+### Using fastapi command
 
-1. Clone the repository:
-   ```
-   git clone https://github.com/yourusername/vector-db-api.git
-   cd vector-db-api
-   ```
-
-2. Create and activate a virtual environment:
+1. Create and activate a virtual environment:
    ```
    uv sync
    source venv/bin/activate
    ```
 
-3. Run the API server:
+2. Run the API server:
    ```
    fastapi dev app/main.py
+   ```
+
+## Running tests
+
+1. Create and activate a virtual environment:
+   ```
+   uv sync
+   source venv/bin/activate
+   ```
+
+2. Run the pytest command
+   ```
+   pytest
    ```
 
 ## API Documentation
